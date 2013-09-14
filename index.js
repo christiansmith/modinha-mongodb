@@ -63,6 +63,10 @@ MongoDB.prototype.find = function(conditions, options, callback) {
     options = {};
   }
 
+  if (typeof conditions._id === 'string') { 
+    conditions._id = new ObjectID(conditions._id); 
+  }
+
   this.collection.find(conditions).toArray(function (err, result) {
     if (err) { return callback(err); }
     var reply = (Object.keys(conditions).length === 0) ? result : result[0]
@@ -76,6 +80,11 @@ MongoDB.prototype.find = function(conditions, options, callback) {
  */
 
 MongoDB.prototype.update = function(conditions, update, callback) {
+
+  if (typeof conditions._id === 'string') { 
+    conditions._id = new ObjectID(conditions._id); 
+  }
+
   this.collection.update(conditions, update, function (err) {
     if (err) { return callback(err); }
     callback(null);    
@@ -88,6 +97,11 @@ MongoDB.prototype.update = function(conditions, update, callback) {
  */
 
 MongoDB.prototype.destroy = function(conditions, callback) {
+
+    if (typeof conditions._id === 'string') { 
+    conditions._id = new ObjectID(conditions._id); 
+  }
+
   this.collection.remove(conditions, function (err) {
     if (err) { return callback(err); }
     callback(null);    
